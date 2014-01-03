@@ -32,7 +32,7 @@ public class PlayerPacketGenerator extends PacketGenerator {
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.z, z);
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.yaw, yaw);
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.pitch, pitch);
-		packet.setDatawatcher(null);
+		packet.setDatawatcher(statue.getDataWatcher());
 		
 		return packet;
 	}
