@@ -5,16 +5,26 @@ import org.bukkit.command.CommandSender;
 import com.bergerkiller.bukkit.common.PluginBase;
 
 public class Statues extends PluginBase {
+	private static Statues instance;
 	public static int NEXT_ENTITY_ID = Short.MAX_VALUE;
+	
+	private static void setInstance(Statues instance) {
+		Statues.instance = instance;
+	}
+	
+	public static Statues getInstance() {
+		return instance;
+	}
 	
 	@Override
 	public void enable() {
-		//TODO: Start coding ;)
+		setInstance(this);
+		register(new StatueListener());
 	}
 	
 	@Override
 	public void disable() {
-		
+		setInstance(null);
 	}
 
 	@Override
