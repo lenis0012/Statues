@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.bergerkiller.bukkit.common.PluginBase;
 
 public class Statues extends PluginBase {
+	public static int NEXT_ENTITY_ID = Short.MAX_VALUE;
 	
 	@Override
 	public void enable() {
