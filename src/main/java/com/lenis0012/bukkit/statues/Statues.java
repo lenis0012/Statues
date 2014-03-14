@@ -20,6 +20,7 @@ public class Statues extends PluginBase {
 	public void enable() {
 		setInstance(this);
 		register(new StatueListener());
+		register(new StatueCommand(this), "statue");
 	}
 	
 	@Override

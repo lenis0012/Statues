@@ -1,7 +1,11 @@
 name: Statues
 version: 2.0dev
 main: com.lenis0012.bukkit.statues.Statues
-description: Create fake players with own imagination.
+description: Create fake players with your own imagination.
 depend: [BKCommonLib]
 author: lenis0012
 dev-url: http://dev.bukkit.org/bukkit-mods/statues/
+commands:
+  statue:
+    description: Statues main command.
+    usage: /statue
