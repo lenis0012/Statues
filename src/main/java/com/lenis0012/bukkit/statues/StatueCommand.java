@@ -67,7 +67,7 @@ public class StatueCommand implements CommandExecutor {
 				plugin.getLogger().log(Level.SEVERE, "Failed to handle command", e);
 			}
 		} else {
-			player.sendMessage("§cThat command doesn't exist.");
+			player.sendMessage("\247cThat command doesn't exist.");
 		}
 		
 		return true;
