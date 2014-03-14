@@ -76,7 +76,9 @@ public class StatueCommand implements CommandExecutor {
 	@StatueCMD(aliases = "help,?", minArgs = 0, permission = "")
 	public void help(Player player, String[] args) {
 		player.sendMessage(Helper.fixColors(
-				"&6lStatues command help:"));
+				"&6&lStatues command help:\n" +
+				"&a/statue create player <name> &7- Create a player statue\n" +
+				"&a/statue create mob <type> &7- Create a mob statue"));
 	}
 	
 	@StatueCMD(aliases = "create", minArgs = 2, permission = "statues.create")
