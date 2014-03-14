@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.common.utils.LogicUtil;
 import com.lenis0012.bukkit.statues.core.PlayerStatue;
+import com.lenis0012.bukkit.statues.core.StatueManager;
 
 public class StatueCommand implements CommandExecutor {
 	private Map<String, Method> commands = new HashMap<String, Method>();
@@ -54,8 +55,8 @@ public class StatueCommand implements CommandExecutor {
 				StatueCMD annotation = method.getAnnotation(StatueCMD.class);
 				if(annotation.minArgs() < args.length) {
 					String permission = annotation.permission();
-					if(permission == null || player.hasPermission(permission)) {
-					method.invoke(this, player, args);
+					if(permission.isEmpty() || player.hasPermission(permission)) {
+						method.invoke(this, player, args);
 					} else {
 						player.sendMessage("\247cYou don't have permission to perform this command.");
 					}
@@ -72,12 +73,20 @@ public class StatueCommand implements CommandExecutor {
 		return true;
 	}
 	
+	@StatueCMD(aliases = "help,?", minArgs = 0, permission = "")
+	public void help(Player player, String[] args) {
+		player.sendMessage(Helper.fixColors(
+				"&6lStatues command help:"));
+	}
+	
 	@StatueCMD(aliases = "create", minArgs = 2, permission = "statues.create")
 	public void create(Player player, String[] args) {
 		String type = args[1];
+		StatueManager manager = plugin.getStatueManager();
 		if(LogicUtil.contains(type, "player", "human")) {
 			String name = args[2];
-			PlayerStatue statue = new PlayerStatue(0, player.getLocation(), name, 0);
+			PlayerStatue statue = new PlayerStatue(manager.getFreeId(), player.getLocation(), name, 0);
+			manager.addStatue(statue);
 			statue.spawn();
 			player.sendMessage("\247aCreated player statue named \247e" + name + "\247a.");
 		}

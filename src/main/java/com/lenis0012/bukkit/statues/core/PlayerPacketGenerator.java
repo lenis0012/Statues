@@ -18,9 +18,9 @@ public class PlayerPacketGenerator extends PacketGenerator {
 	public CommonPacket getSpawnPacket() {
 		CommonPacket packet = new CommonPacket(PacketType.OUT_ENTITY_SPAWN_NAMED);
 		Location loc = statue.getLocation();
-		int x = Helper.floor(loc.getX() * 32.0D);
-		int y = Helper.floor(loc.getY() * 32.0D);
-		int z = Helper.floor(loc.getZ() * 32.0D);
+		int x = Helper.getFixedPoint(loc.getX());
+		int y = Helper.getFixedPoint(loc.getY());
+		int z = Helper.getFixedPoint(loc.getZ());
 		byte yaw = Helper.getByteFromDegree(loc.getYaw());
 		byte pitch = Helper.getByteFromDegree(loc.getPitch());
 		

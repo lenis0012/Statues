@@ -7,21 +7,32 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.lenis0012.bukkit.statues.core.PlayerStatue;
 import com.lenis0012.bukkit.statues.core.Statue;
+import com.lenis0012.bukkit.statues.core.StatueManager;
 
 public class StatueListener implements Listener {
+	private Statues plugin;
+	
+	public StatueListener(Statues plugin) {
+		this.plugin = plugin;
+	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		final Statue statue = new PlayerStatue(0, player.getLocation(), player.getName(), 0);
-		Bukkit.getScheduler().runTaskLater(Statues.getInstance(), new Runnable() {
+		StatueManager manager = plugin.getStatueManager();
+		for(Statue statue : manager.getStatues()) {
+			spawnStatue(player, statue);
+		}
+	}
+	
+	private void spawnStatue(final Player player, final Statue statue) {
+		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
 
 			@Override
 			public void run() {
-				statue.spawn();
+				statue.spawn(player);
 			}
-		}, 5);
+		}, 5L);
 	}
 }

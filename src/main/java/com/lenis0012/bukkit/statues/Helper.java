@@ -2,6 +2,7 @@ package com.lenis0012.bukkit.statues;
 
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -34,7 +35,15 @@ public class Helper {
 		return valInt > val ? valInt - 1 : valInt;
 	}
 	
+	public static int getFixedPoint(double value) {
+		return floor(value * 32.0D);
+	}
+	
 	public static byte getByteFromDegree(float deg) {
 		return (byte) (int) (deg * 256.0F / 360.0F);
+	}
+	
+	public static String fixColors(String from) {
+		return ChatColor.translateAlternateColorCodes('&', from);
 	}
 }
