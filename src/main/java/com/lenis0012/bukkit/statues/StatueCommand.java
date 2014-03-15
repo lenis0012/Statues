@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.common.utils.LogicUtil;
+import com.lenis0012.bukkit.statues.api.StatueEventHandler;
 import com.lenis0012.bukkit.statues.core.MobStatue;
 import com.lenis0012.bukkit.statues.core.PlayerStatue;
 import com.lenis0012.bukkit.statues.core.StatueManager;
@@ -90,16 +91,20 @@ public class StatueCommand implements CommandExecutor {
 		if(LogicUtil.contains(type, "player", "human")) {
 			String name = args[2];
 			PlayerStatue statue = new PlayerStatue(manager.getFreeId(), player.getLocation(), name, 0);
-			manager.addStatue(statue);
-			statue.spawn();
-			player.sendMessage("\247aCreated player statue named \247e" + name + "\247a.");
+			if(StatueEventHandler.callCreateEvent(player, statue)) {
+				manager.addStatue(statue);
+				statue.spawn();
+				player.sendMessage("\247aCreated player statue named \247e" + name + "\247a.");
+			}
 		} else if(LogicUtil.contains(type, "mob", "animal", "monster")) {
 			try {
 				EntityType etype = EntityType.valueOf(args[2].toUpperCase());
 				MobStatue statue = new MobStatue(manager.getFreeId(), player.getLocation(), etype);
-				manager.addStatue(statue);
-				statue.spawn();
-				player.sendMessage("\247aCreated a \247e" + args[2].toLowerCase() + " \247astatue.");
+				if(StatueEventHandler.callCreateEvent(player, statue)) {
+					manager.addStatue(statue);
+					statue.spawn();
+					player.sendMessage("\247aCreated a \247e" + args[2].toLowerCase() + " \247astatue.");
+				}
 			} catch(Exception e) {
 				player.sendMessage("\247cInvalid mob type, type \2474/statue types \247cto view all types.");
 			}
