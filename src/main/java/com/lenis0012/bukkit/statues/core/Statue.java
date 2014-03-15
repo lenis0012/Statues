@@ -2,6 +2,7 @@ package com.lenis0012.bukkit.statues.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.common.protocol.CommonPacket;
@@ -34,6 +35,10 @@ public abstract class Statue {
 	
 	public int getEntityId() {
 		return this.entityId;
+	}
+	
+	public World getWorld() {
+		return loc.getWorld();
 	}
 	
 	public Location getLocation() {
