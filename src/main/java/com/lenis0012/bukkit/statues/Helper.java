@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.common.protocol.CommonPacket;
@@ -45,5 +46,10 @@ public class Helper {
 	
 	public static String fixColors(String from) {
 		return ChatColor.translateAlternateColorCodes('&', from);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static int getEntityTypeId(EntityType type) {
+		return type.getTypeId();
 	}
 }

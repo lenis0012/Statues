@@ -12,9 +12,11 @@ import java.util.logging.Level;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.bergerkiller.bukkit.common.utils.LogicUtil;
+import com.lenis0012.bukkit.statues.core.MobStatue;
 import com.lenis0012.bukkit.statues.core.PlayerStatue;
 import com.lenis0012.bukkit.statues.core.StatueManager;
 
@@ -91,6 +93,18 @@ public class StatueCommand implements CommandExecutor {
 			manager.addStatue(statue);
 			statue.spawn();
 			player.sendMessage("\247aCreated player statue named \247e" + name + "\247a.");
+		} else if(LogicUtil.contains(type, "mob", "animal", "monster")) {
+			try {
+				EntityType etype = EntityType.valueOf(args[2].toUpperCase());
+				MobStatue statue = new MobStatue(manager.getFreeId(), player.getLocation(), etype);
+				manager.addStatue(statue);
+				statue.spawn();
+				player.sendMessage("\247aCreated a \247e" + args[2].toLowerCase() + " \247astatue.");
+			} catch(Exception e) {
+				player.sendMessage("\247cInvalid mob type, type \2474/statue types \247cto view all types.");
+			}
+		} else {
+			player.sendMessage("\247cUnkown statue type, choose mob or player.");
 		}
 	}
 	
