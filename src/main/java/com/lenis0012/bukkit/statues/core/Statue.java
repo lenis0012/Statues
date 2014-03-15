@@ -1,5 +1,6 @@
 package com.lenis0012.bukkit.statues.core;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -44,6 +45,7 @@ public abstract class Statue {
 		if(!spawned) {
 			CommonPacket packet = packetGenerator.getSpawnPacket();
 			Helper.sendPacketToWorld(packet, loc.getWorld());
+			rotateHead();
 			this.spawned = true;
 		}
 	}
@@ -52,7 +54,34 @@ public abstract class Statue {
 		if(spawned) {
 			CommonPacket packet = packetGenerator.getSpawnPacket();
 			PacketUtil.sendPacket(player, packet);
+			rotateHead(player);
 		}
+	}
+	
+	private void rotateHead() {
+		Bukkit.getScheduler().runTaskLater(Statues.getInstance(), new Runnable() {
+
+			@Override
+			public void run() {
+				CommonPacket headPacket = packetGenerator.getHeadRotationPacket();
+				CommonPacket bodyPacket = packetGenerator.getLookPacket();
+				Helper.sendPacketToWorld(headPacket, loc.getWorld());
+				Helper.sendPacketToWorld(bodyPacket, loc.getWorld());
+			}
+		}, 5L);
+	}
+	
+	private void rotateHead(final Player player) {
+		Bukkit.getScheduler().runTaskLater(Statues.getInstance(), new Runnable() {
+
+			@Override
+			public void run() {
+				CommonPacket headPacket = packetGenerator.getHeadRotationPacket();
+				CommonPacket bodyPacket = packetGenerator.getLookPacket();
+				PacketUtil.sendPacket(player, headPacket);
+				PacketUtil.sendPacket(player, bodyPacket);
+			}
+		}, 5L);
 	}
 	
 	public abstract DataWatcher getDefaultDataWatcher();

@@ -33,6 +33,6 @@ public class StatueListener implements Listener {
 			public void run() {
 				statue.spawn(player);
 			}
-		}, 5L);
+		}, 20L);
 	}
 }

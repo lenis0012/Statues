@@ -34,4 +34,15 @@ public abstract class PacketGenerator {
 		
 		return packet;
 	}
+	
+	public CommonPacket getHeadRotationPacket() {
+		Location loc = statue.getLocation();
+		byte yaw = Helper.getByteFromDegree(loc.getYaw());
+		
+		CommonPacket packet = new CommonPacket(PacketType.OUT_ENTITY_HEAD_ROTATION);
+		packet.write(PacketType.OUT_ENTITY_HEAD_ROTATION.entityId, statue.getEntityId());
+		packet.write(PacketType.OUT_ENTITY_HEAD_ROTATION.headYaw, yaw);
+		
+		return packet;
+	}
 }
