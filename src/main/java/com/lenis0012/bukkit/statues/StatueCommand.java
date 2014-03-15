@@ -75,7 +75,7 @@ public class StatueCommand implements CommandExecutor {
 		return true;
 	}
 	
-	@StatueCMD(aliases = "help,?", minArgs = 0, permission = "")
+	@StatueCMD(aliases = "help,?", minArgs = -1, permission = "")
 	public void help(Player player, String[] args) {
 		player.sendMessage(Helper.fixColors(
 				"&6&lStatues command help:\n" +

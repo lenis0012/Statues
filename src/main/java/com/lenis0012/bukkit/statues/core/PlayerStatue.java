@@ -13,6 +13,7 @@ public class PlayerStatue extends Statue {
 		this.name = name;
 		this.itemInHand = itemInHand;
 		this.packetGenerator = new PlayerPacketGenerator(this);
+		this.initDataWatcher();
 	}
 	
 	public String getName() {

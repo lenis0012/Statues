@@ -12,6 +12,7 @@ public class MobStatue extends Statue {
 		super(id, loc);
 		this.type = type;
 		this.packetGenerator = new MobPacketGenerator(this);
+		this.initDataWatcher();
 	}
 	
 	public EntityType getType() {

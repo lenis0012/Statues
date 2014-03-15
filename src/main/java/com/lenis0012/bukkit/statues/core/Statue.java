@@ -22,6 +22,9 @@ public abstract class Statue {
 		this.id = id;
 		this.entityId = Statues.NEXT_ENTITY_ID++;
 		this.loc = loc;
+	}
+	
+	protected void initDataWatcher() {
 		this.dataWatcher = this.getDefaultDataWatcher();
 	}
 	
