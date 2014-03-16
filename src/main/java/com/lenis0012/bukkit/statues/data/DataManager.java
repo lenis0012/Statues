@@ -59,7 +59,7 @@ public class DataManager implements Listener {
 				}
 			}
 			
-			plugin.getLogger().log(Level.INFO, "Loaded " + loadedStatues + " in world " + world.getName());
+			plugin.getLogger().log(Level.INFO, "Loaded " + loadedStatues + " statues in world " + world.getName());
 		} catch(Throwable t) {
 			plugin.getLogger().log(Level.SEVERE, "Failed to load statues", t);
 		}
@@ -75,9 +75,9 @@ public class DataManager implements Listener {
 				String world = statue.getWorld().getName();
 				List<StatueData> list = null;
 				if(worlds.containsKey(world)) {
-					list = new ArrayList<StatueData>();
-				} else {
 					list = worlds.get(world);
+				} else {
+					list = new ArrayList<StatueData>();
 				}
 				
 				list.add(Statue.saveStatue(statue));
