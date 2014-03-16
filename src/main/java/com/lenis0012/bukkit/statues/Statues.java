@@ -20,6 +20,7 @@ public class Statues extends PluginBase {
 	
 	private StatueManager statueManager;
 	private DataManager dataManager;
+	private RenderTask renderTask;
 	
 	@Override
 	public void enable() {
@@ -29,12 +30,15 @@ public class Statues extends PluginBase {
 		
 		this.statueManager = new StatueManager();
 		this.dataManager = new DataManager(this);
+		this.renderTask = new RenderTask(statueManager);
+		renderTask.start();
 	}
 	
 	@Override
 	public void disable() {
 		setInstance(null);
 		dataManager.saveStatues();
+		renderTask.stop();
 	}
 	
 	public StatueManager getStatueManager() {

@@ -82,6 +82,13 @@ public abstract class Statue {
 		}
 	}
 	
+	public void resendLocation() {
+		if(spawned) {
+			CommonPacket packet = packetGenerator.getTeleportPacket();
+			Helper.sendPacketToWorld(packet, loc.getWorld());
+		}
+	}
+	
 	private void rotateHead() {
 		Bukkit.getScheduler().runTaskLater(Statues.getInstance(), new Runnable() {
 
