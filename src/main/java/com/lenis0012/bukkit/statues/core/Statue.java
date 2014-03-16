@@ -10,6 +10,7 @@ import com.bergerkiller.bukkit.common.utils.PacketUtil;
 import com.bergerkiller.bukkit.common.wrappers.DataWatcher;
 import com.lenis0012.bukkit.statues.Helper;
 import com.lenis0012.bukkit.statues.Statues;
+import com.lenis0012.bukkit.statues.data.StatueData;
 
 public abstract class Statue {
 	protected int id;
@@ -66,6 +67,21 @@ public abstract class Statue {
 		}
 	}
 	
+	public void despawn() {
+		if(spawned) {
+			CommonPacket packet = packetGenerator.getDestroyPacket();
+			Helper.sendPacketToWorld(packet, loc.getWorld());
+			this.spawned = false;
+		}
+	}
+	
+	public void despawn(Player player) {
+		if(spawned) {
+			CommonPacket packet = packetGenerator.getDestroyPacket();
+			PacketUtil.sendPacket(player, packet);
+		}
+	}
+	
 	private void rotateHead() {
 		Bukkit.getScheduler().runTaskLater(Statues.getInstance(), new Runnable() {
 
@@ -91,6 +107,28 @@ public abstract class Statue {
 			}
 		}, 5L);
 	}
+	
+	public static StatueData saveStatue(Statue statue) {
+		StatueData data = new StatueData();
+		data.write("id", statue.getId());
+		data.writeLocation("location", statue.getLocation());
+		statue.saveKeys(data);
+		
+		return data;
+	}
+	
+	public static Statue loadStatue(StatueData data) {
+		int id = data.read("id", int.class);
+		Location loc = data.readLocation("location");
+		boolean isPlayer = data.read("isPlayer", boolean.class);
+		if(isPlayer) {
+			return new PlayerStatue(id, loc, data);
+		} else {
+			return new MobStatue(id, loc, data);
+		}
+	}
+	
+	public abstract void saveKeys(StatueData data);
 	
 	public abstract DataWatcher getDefaultDataWatcher();
 }

@@ -4,9 +4,17 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
 import com.bergerkiller.bukkit.common.wrappers.DataWatcher;
+import com.lenis0012.bukkit.statues.data.StatueData;
 
 public class MobStatue extends Statue {
 	private EntityType type;
+	
+	public MobStatue(int id, Location loc, StatueData data) {
+		super(id, loc);
+		this.type = EntityType.valueOf(data.read("type", String.class));
+		this.packetGenerator = new MobPacketGenerator(this);
+		this.initDataWatcher();
+	}
 	
 	public MobStatue(int id, Location loc, EntityType type) {
 		super(id, loc);
@@ -32,5 +40,11 @@ public class MobStatue extends Statue {
 		}
 		
 		return dataWatcher;
+	}
+
+	@Override
+	public void saveKeys(StatueData data) {
+		data.write("type", type.toString());
+		data.write("isPlayer", false);
 	}
 }
