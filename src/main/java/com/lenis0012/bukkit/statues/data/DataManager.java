@@ -54,6 +54,7 @@ public class DataManager implements Listener {
 				for(StatueData data : obj) {
 					Statue statue = Statue.loadStatue(data);
 					manager.addStatue(statue);
+					statue.spawn();
 					ois.close();
 					loadedStatues += 1;
 				}
