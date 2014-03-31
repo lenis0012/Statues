@@ -1,5 +1,7 @@
 package com.lenis0012.bukkit.statues;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -26,8 +28,11 @@ public class Helper {
 	}
 	
 	public static void sendPacketToWorld(CommonPacket packet, World world) {
-		for(Player player : world.getPlayers()) {
-			PacketUtil.sendPacket(player, packet);
+		List<Player> players = new ArrayList<Player>(world.getPlayers());
+		for(Player player : players) {
+			if(player.isOnline()) {
+				PacketUtil.sendPacket(player, packet);
+			}
 		}
 	}
 	
