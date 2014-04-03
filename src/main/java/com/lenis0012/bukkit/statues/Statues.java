@@ -18,6 +18,10 @@ public class Statues extends PluginBase {
 		return instance;
 	}
 	
+	public static StatueManager getManager() {
+		return instance.getStatueManager();
+	}
+	
 	private StatueManager statueManager;
 	private DataManager dataManager;
 	private RenderTask renderTask;

@@ -147,9 +147,12 @@ public class StatueCommand implements CommandExecutor {
 		StatueManager manager = plugin.getStatueManager();
 		if(manager.hasSelected(player)) {
 			Statue statue = manager.getSelected(player);
-			statue.despawn();
-			manager.removeStatue(statue.getId());
-			player.sendMessage(Helper.fixColors("&aRemoved statue &e" + statue.getId()));
+			if(StatueEventHandler.callRemoveEvent(player, statue)) {
+				statue.despawn();
+				manager.removeStatue(statue.getId());
+				manager.clearSelections(statue);
+				player.sendMessage(Helper.fixColors("&aRemoved statue &e" + statue.getId()));
+			}
 		} else {
 			player.sendMessage(Helper.fixColors("&cYou haven't selected a statue."));
 		}

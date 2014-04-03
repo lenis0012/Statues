@@ -17,4 +17,14 @@ public class StatueEventHandler {
 			return true;
 		}
 	}
+	
+	public static boolean callRemoveEvent(Player player, Statue statue) {
+		StatueRemoveEvent event = new StatueRemoveEvent(statue, player);
+		if(CommonUtil.hasHandlers(event.getHandlers())) {
+			Bukkit.getPluginManager().callEvent(event);
+			return !event.isCancelled();
+		} else {
+			return true;
+		}
+	}
 }
