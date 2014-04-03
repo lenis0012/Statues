@@ -1,5 +1,5 @@
 name: Statues
-version: 2.0dev
+version: 2.0
 main: com.lenis0012.bukkit.statues.Statues
 description: Create fake players with your own imagination.
 depend: [BKCommonLib]

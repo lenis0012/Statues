@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +21,7 @@ import com.bergerkiller.bukkit.common.utils.LogicUtil;
 import com.lenis0012.bukkit.statues.api.StatueEventHandler;
 import com.lenis0012.bukkit.statues.core.MobStatue;
 import com.lenis0012.bukkit.statues.core.PlayerStatue;
+import com.lenis0012.bukkit.statues.core.Statue;
 import com.lenis0012.bukkit.statues.core.StatueManager;
 
 public class StatueCommand implements CommandExecutor {
@@ -61,16 +64,16 @@ public class StatueCommand implements CommandExecutor {
 					if(permission.isEmpty() || player.hasPermission(permission)) {
 						method.invoke(this, player, args);
 					} else {
-						player.sendMessage("\247cYou don't have permission to perform this command.");
+						player.sendMessage(Helper.fixColors("&cYou don't have permission to perform this command."));
 					}
 				} else {
-					player.sendMessage("\247cYou haven't used enough arguments.");
+					player.sendMessage(Helper.fixColors("&cYou haven't used enough arguments."));
 				}
 			} catch(Exception e) {
 				plugin.getLogger().log(Level.SEVERE, "Failed to handle command", e);
 			}
 		} else {
-			player.sendMessage("\247cThat command doesn't exist.");
+			player.sendMessage(Helper.fixColors("&cThat command doesn't exist."));
 		}
 		
 		return true;
@@ -81,7 +84,9 @@ public class StatueCommand implements CommandExecutor {
 		player.sendMessage(Helper.fixColors(
 				"&6&lStatues command help:\n" +
 				"&a/statue create player <name> &7- Create a player statue\n" +
-				"&a/statue create mob <type> &7- Create a mob statue"));
+				"&a/statue create mob <type> &7- Create a mob statue\n" +
+				"&a/statue select &7- Select nearest statue\n" +
+				"&a/statue remove &7- Remove selected statue"));
 	}
 	
 	@StatueCMD(aliases = "create", minArgs = 2, permission = "statues.create")
@@ -94,7 +99,7 @@ public class StatueCommand implements CommandExecutor {
 			if(StatueEventHandler.callCreateEvent(player, statue)) {
 				manager.addStatue(statue);
 				statue.spawn();
-				player.sendMessage("\247aCreated player statue named \247e" + name + "\247a.");
+				player.sendMessage(Helper.fixColors("&aCreated player statue named &e" + name + "&a."));
 			}
 		} else if(LogicUtil.contains(type, "mob", "animal", "monster")) {
 			try {
@@ -103,13 +108,50 @@ public class StatueCommand implements CommandExecutor {
 				if(StatueEventHandler.callCreateEvent(player, statue)) {
 					manager.addStatue(statue);
 					statue.spawn();
-					player.sendMessage("\247aCreated a \247e" + args[2].toLowerCase() + " \247astatue.");
+					player.sendMessage(Helper.fixColors("&aCreated a &e" + args[2].toLowerCase() + " &astatue."));
 				}
 			} catch(Exception e) {
-				player.sendMessage("\247cInvalid mob type, type \2474/statue types \247cto view all types.");
+				player.sendMessage(Helper.fixColors("&cInvalid mob type, type &4/statue types &cto view all types."));
 			}
 		} else {
-			player.sendMessage("\247cUnkown statue type, choose mob or player.");
+			player.sendMessage(Helper.fixColors("&cUnkown statue type, choose mob or player."));
+		}
+	}
+	
+	@StatueCMD(aliases = "select", minArgs = 0, permission = "statues.select")
+	public void select(Player player, String[] args) {
+		StatueManager manager = plugin.getStatueManager();
+		Statue nearest = null;
+		double distance = Double.MAX_VALUE;
+		for(Statue statue : manager.getStatues()) {
+			World world = statue.getWorld();
+			Location loc = statue.getLocation();
+			if(world.equals(player.getWorld())) {
+				double dis = loc.distance(player.getLocation());
+				if(dis < distance) {
+					nearest = statue;
+				}
+			}
+		}
+		
+		if(nearest != null) {
+			manager.setSelected(player, nearest);
+			player.sendMessage(Helper.fixColors("&aSelected statue &e" + nearest.getId()));
+		} else {
+			player.sendMessage(Helper.fixColors("&cNo near statues were found, try another world?"));
+		}
+	}
+	
+	@StatueCMD(aliases = "remove,delete", minArgs = 0, permission = "statues.remove")
+	public void remove(Player player, String[] args) {
+		StatueManager manager = plugin.getStatueManager();
+		if(manager.hasSelected(player)) {
+			Statue statue = manager.getSelected(player);
+			statue.despawn();
+			manager.removeStatue(statue.getId());
+			player.sendMessage(Helper.fixColors("&aRemoved statue &e" + statue.getId()));
+		} else {
+			player.sendMessage(Helper.fixColors("&cYou haven't selected a statue."));
 		}
 	}
 	

@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.lenis0012.bukkit.statues.core.Statue;
@@ -26,6 +27,13 @@ public class StatueListener implements Listener {
 		Player player = event.getPlayer();
 		StatueManager manager = plugin.getStatueManager();
 		spawnStatues(player, manager.getStatues());
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		StatueManager manager = plugin.getStatueManager();
+		manager.clearSelected(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
