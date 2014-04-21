@@ -130,6 +130,7 @@ public class StatueCommand implements CommandExecutor {
 				double dis = loc.distance(player.getLocation());
 				if(dis < distance) {
 					nearest = statue;
+					distance = dis;
 				}
 			}
 		}
