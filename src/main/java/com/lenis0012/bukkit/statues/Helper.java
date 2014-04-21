@@ -12,10 +12,6 @@ import com.bergerkiller.bukkit.common.protocol.CommonPacket;
 import com.bergerkiller.bukkit.common.utils.PacketUtil;
 
 public class Helper {
-	/*
-	 * Helps to build da statue hueue
-	 * #badhumor
-	 */
 	
 	public static void sendPacketToWorld(CommonPacket packet, World world) {
 		List<Player> players = new ArrayList<Player>(world.getPlayers());
