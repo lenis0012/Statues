@@ -2,7 +2,6 @@ package com.lenis0012.bukkit.statues;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -12,20 +11,11 @@ import org.bukkit.entity.Player;
 import com.bergerkiller.bukkit.common.protocol.CommonPacket;
 import com.bergerkiller.bukkit.common.utils.PacketUtil;
 
-import net.minecraft.util.com.google.common.base.Charsets;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
-
 public class Helper {
 	/*
 	 * Helps to build da statue hueue
 	 * #badhumor
 	 */
-	
-	public static GameProfile getGameProfile(String name) {
-		UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
-		String uuidStr = uuid.toString().replaceAll("-", "");
-		return new GameProfile(uuidStr, name);
-	}
 	
 	public static void sendPacketToWorld(CommonPacket packet, World world) {
 		List<Player> players = new ArrayList<Player>(world.getPlayers());
