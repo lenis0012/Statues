@@ -1,5 +1,7 @@
 package com.lenis0012.bukkit.statues.core;
 
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+
 import org.bukkit.Location;
 
 import com.bergerkiller.bukkit.common.wrappers.DataWatcher;
@@ -7,6 +9,7 @@ import com.lenis0012.bukkit.statues.data.StatueData;
 
 public class PlayerStatue extends Statue {
 	private String name;
+	private GameProfile profile;
 	private int itemInHand;
 	
 	public PlayerStatue(int id, Location loc, StatueData data) {
@@ -33,6 +36,14 @@ public class PlayerStatue extends Statue {
 		return this.itemInHand;
 	}
 
+	public GameProfile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(GameProfile profile) {
+		this.profile = profile;
+	}
+
 	@Override
 	public DataWatcher getDefaultDataWatcher() {
 		DataWatcher dw = new DataWatcher();
@@ -47,5 +58,8 @@ public class PlayerStatue extends Statue {
 		data.write("name", name);
 		data.write("itemInHand", itemInHand);
 		data.write("isPlayer", true);
+		if(profile != null) {
+			data.write("uuid", profile.getId().toString());
+		}
 	}
 }

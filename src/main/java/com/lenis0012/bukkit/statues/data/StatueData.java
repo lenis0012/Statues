@@ -30,6 +30,10 @@ public class StatueData implements Serializable {
 		return (T) data.get(key);
 	}
 	
+	public boolean contains(String key) {
+		return data.containsKey(key);
+	}
+	
 	public Location readLocation(String key) {
 		World world = Bukkit.getWorld(read(key + ".world", String.class));
 		double x = read(key + ".x", double.class);

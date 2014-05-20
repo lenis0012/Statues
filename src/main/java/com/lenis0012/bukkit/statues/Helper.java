@@ -3,6 +3,7 @@ package com.lenis0012.bukkit.statues;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -42,5 +43,15 @@ public class Helper {
 	@SuppressWarnings("deprecation")
 	public static int getEntityTypeId(EntityType type) {
 		return type.getTypeId();
+	}
+	
+	public static Player getPlayer(String name) {
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			if(p.getName().equals(name)) {
+				return p;
+			}
+		}
+		
+		return null;
 	}
 }

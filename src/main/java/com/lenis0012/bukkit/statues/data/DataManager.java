@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -20,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import com.lenis0012.bukkit.statues.Statues;
+import com.lenis0012.bukkit.statues.core.PlayerStatue;
 import com.lenis0012.bukkit.statues.core.Statue;
 import com.lenis0012.bukkit.statues.core.StatueManager;
 
@@ -51,12 +54,28 @@ public class DataManager implements Listener {
 				FileInputStream fis = new FileInputStream(file);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				List<StatueData> obj = (List<StatueData>) ois.readObject();
-				for(StatueData data : obj) {
+				for(final StatueData data : obj) {
 					Statue statue = Statue.loadStatue(data);
 					manager.addStatue(statue);
-					statue.spawn();
 					ois.close();
 					loadedStatues += 1;
+					if(statue instanceof PlayerStatue) {
+						final PlayerStatue pstatue = (PlayerStatue) statue;
+						Bukkit.getScheduler().runTaskAsynchronously(Statues.getInstance(), new Runnable() {
+	
+							@Override
+							public void run() {
+								String uuid = data.contains("uuid") ? data.read("uuid", String.class).replaceAll("-", "") : null;
+								ProfileLoader loader = new ProfileLoader(uuid, pstatue.getName());
+								GameProfile profile = loader.loadProfile();
+								System.out.println(profile.getProperties().toString());
+								pstatue.setProfile(profile);
+								pstatue.spawn();
+							}
+						});
+					} else {
+						statue.spawn();
+					}
 				}
 			}
 			

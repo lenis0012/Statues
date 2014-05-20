@@ -1,11 +1,9 @@
 package com.lenis0012.bukkit.statues.core;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import com.bergerkiller.bukkit.common.protocol.CommonPacket;
 import com.bergerkiller.bukkit.common.protocol.PacketType;
-import com.bergerkiller.bukkit.common.utils.CommonUtil;
 import com.lenis0012.bukkit.statues.Helper;
 
 public class PlayerPacketGenerator extends PacketGenerator {
@@ -27,7 +25,7 @@ public class PlayerPacketGenerator extends PacketGenerator {
 		byte pitch = Helper.getByteFromDegree(loc.getPitch());
 		
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.entityId, statue.getEntityId());
-		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.profile, CommonUtil.getGameProfile(ChatColor.translateAlternateColorCodes('&', statue.getName())));
+		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.profile, statue.getProfile());
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.heldItemId, statue.getItemInHand());
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.x, x);
 		packet.write(PacketType.OUT_ENTITY_SPAWN_NAMED.y, y);

@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -23,6 +26,7 @@ import com.lenis0012.bukkit.statues.core.MobStatue;
 import com.lenis0012.bukkit.statues.core.PlayerStatue;
 import com.lenis0012.bukkit.statues.core.Statue;
 import com.lenis0012.bukkit.statues.core.StatueManager;
+import com.lenis0012.bukkit.statues.data.ProfileLoader;
 
 public class StatueCommand implements CommandExecutor {
 	private Map<String, Method> commands = new HashMap<String, Method>();
@@ -95,11 +99,21 @@ public class StatueCommand implements CommandExecutor {
 		StatueManager manager = plugin.getStatueManager();
 		if(LogicUtil.contains(type, "player", "human")) {
 			String name = args[2];
-			PlayerStatue statue = new PlayerStatue(manager.getFreeId(), player.getLocation(), name, 0);
+			final PlayerStatue statue = new PlayerStatue(manager.getFreeId(), player.getLocation(), name, 0);
 			if(StatueEventHandler.callCreateEvent(player, statue)) {
 				manager.addStatue(statue);
-				statue.spawn();
 				player.sendMessage(Helper.fixColors("&aCreated player statue named &e" + name + "&a."));
+				Bukkit.getScheduler().runTaskAsynchronously(Statues.getInstance(), new Runnable() {
+
+					@Override
+					public void run() {
+						ProfileLoader loader = new ProfileLoader(null, statue.getName());
+						GameProfile profile = loader.loadProfile();
+						System.out.println(profile.getProperties().toString());
+						statue.setProfile(profile);
+						statue.spawn();
+					}
+				});
 			}
 		} else if(LogicUtil.contains(type, "mob", "animal", "monster")) {
 			try {
