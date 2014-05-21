@@ -25,7 +25,7 @@ public class ProfileLoader {
 	private final String displayName;
 	
 	public ProfileLoader(String uuid, String name) {
-		this.uuid = uuid.replaceAll("-", ""); //We add these later
+		this.uuid = uuid == null ? null : uuid.replaceAll("-", ""); //We add these later
 		this.displayName = ChatColor.translateAlternateColorCodes('&', name);
 		this.name = ChatColor.stripColor(displayName);
 	}
